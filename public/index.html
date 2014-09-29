@@ -1,0 +1,72 @@
+<!doctype html>
+<html ng-app="MoreYouNode">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>The More You Node.js</title>
+
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js"></script>
+  </head>
+  <body ng-controller="MainCtrl as main">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="item" ng-repeat="item in main.items"
+            ng-click="main.setEditedItem(item)"
+            ng-class="{'active':main.isCurrentItem(item.id)}">
+
+            <button type="button" class="close" ng-click="main.deleteItem(item.id)">&times;</button>
+            <h3>{{item.name}}</h3>
+            <p><strong>{{item.description}}</strong></p>
+          </div>
+        </div>
+        <div class="col-md-8">
+        <!-- CREATING -->
+          <div ng-if="!main.isEditing">
+            <h4>Create a New Item</h4>
+            <hr/>
+            <form class="create-form" role="form" ng-submit="main.createItem(main.newItem)" novalidate>
+              <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" class="form-control" ng-model="main.newItem.name" placeholder="Enter name">
+              </div>
+              <div class="form-group">
+                <label>Item Description</label>
+                <input type="text" class="form-control" ng-model="main.newItem.description" placeholder="Enter description">
+              </div>
+              <button type="submit" class="btn btn-info btn-lg">Create</button>
+            </form>
+          </div>
+          <!-- EDITING -->
+          <div ng-if="main.isEditing">
+            <h4>Editing {{main.editedItem.name}}</h4>
+            <hr/>
+            <form class="edit-form" role="form" ng-submit="main.updateItem(main.editedItem)" novalidate>
+              <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" class="form-control" ng-model="main.editedItem.name" placeholder="Enter name">
+              </div>
+              <div class="form-group">
+                <label>Bookmark URL</label>
+                <input type="text" class="form-control" ng-model="main.editedItem.description" placeholder="Enter description">
+              </div>
+              <button type="submit" class="btn btn-info btn-lg">Save</button>
+              <button type="button" class="btn btn-default btn-lg pull-right" ng-click="main.cancelEditing()">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app/app.js"></script>
+  </body>
+</html>

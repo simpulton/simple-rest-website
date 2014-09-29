@@ -1,0 +1,1 @@
+* A simple website demonstrating CRUD built using AngularJS and powered by StrongLoop.

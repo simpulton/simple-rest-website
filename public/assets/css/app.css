@@ -1,0 +1,20 @@
+body {
+    padding: 20px;
+}
+
+.item {
+    cursor: pointer;
+    border-top: 1px #CCC solid;
+    border-left: 1px #CCC solid;
+    border-right: 1px #CCC solid;
+    margin: 0px;
+    padding: 10px;
+}
+
+.item:last-child {
+    border-bottom: 1px #CCC solid;
+}
+
+.active {
+    background-color: #EEE;
+}

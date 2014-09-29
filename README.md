@@ -1,5 +1,5 @@
 # Simple-Rest-Website 
-A simple website demonstrating CRUD built using AngularJS and powered by [simple-rest-api](https://github.com/simpulton/simple-rest-api).
+A simple website demonstrating CRUD, built using AngularJS, and powered by [simple-rest-api](https://github.com/simpulton/simple-rest-api).
 
 ## Prerequisites
 You will need:

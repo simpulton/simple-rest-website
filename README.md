@@ -1,14 +1,14 @@
-# Simple-Rest-Website 
-A simple website demonstrating CRUD, built using AngularJS, and powered by [simple-rest-api](https://github.com/simpulton/simple-rest-api).
+# Simple REST Website 
+A simple website demonstrating CRUD, built using AngularJS, and powered by [Simple REST API](https://github.com/simpulton/simple-rest-api).
 
 ## Prerequisites
 You will need:
 * [Git](http://git-scm.com/)
 * [NodeJS and NPM](https://gist.github.com/isaacs/579814)
-* [Simple-Rest-Api](https://github.com/simpulton/simple-rest-api)
+* [Simple REST API](https://github.com/simpulton/simple-rest-api)
 
 ## Getting Started
-1. Head over to [Simple-Rest-Api](https://github.com/simpulton/simple-rest-api) and follow the directions there to run the API.
+1. Head over to [Simple REST API](https://github.com/simpulton/simple-rest-api) and follow the directions there to run the API.
 2. Once the API is running, run the following commands
 
   ```bash

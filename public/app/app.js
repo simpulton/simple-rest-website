@@ -1,5 +1,5 @@
-angular.module('MoreYouNode', [])
-  .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
+angular.module('SimpleRESTWebsite', [])
+  .constant('ENDPOINT_URI', 'http://localhost:3000/api/')
   .controller('MainCtrl', function (ItemsModel) {
     var main = this;
 
@@ -29,6 +29,7 @@ angular.module('MoreYouNode', [])
     function deleteItem(itemId) {
       ItemsModel.destroy(itemId)
         .then(function (result) {
+          cancelEditing();
           getItems();
         });
     }

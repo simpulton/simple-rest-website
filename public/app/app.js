@@ -1,5 +1,5 @@
 angular.module('SimpleRESTWebsite', [])
-    .constant('ENDPOINT_URI', 'http://localhost:3000/api/')
+    .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
     .controller('MainCtrl', function (ItemsModel) {
         var main = this;
 

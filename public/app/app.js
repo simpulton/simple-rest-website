@@ -1,5 +1,5 @@
 angular.module('SimpleRESTWebsite', ['lbServices'])
-    .controller('MainCtrl', function (Item, $window) {
+    .controller('MainCtrl', function (Item) {
         var main = this;
 
         function getItems() {

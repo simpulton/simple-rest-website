@@ -1,34 +1,33 @@
-angular.module('SimpleRESTWebsite', [])
-    .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
-    .controller('MainCtrl', function (ItemsModel) {
+angular.module('SimpleRESTWebsite', ['lbServices'])
+    .controller('MainCtrl', function (Item, $window) {
         var main = this;
 
         function getItems() {
-            ItemsModel.all()
-                .then(function (result) {
-                    main.items = result.data;
+            Item.find(
+                function (result) {
+                    main.items = result;
                 });
         }
 
         function createItem(item) {
-            ItemsModel.create(item)
-                .then(function (result) {
+            Item.create(item,
+                function (result) {
                     initCreateForm();
                     getItems();
                 });
         }
 
         function updateItem(item) {
-            ItemsModel.update(item.id, item)
-                .then(function (result) {
+            Item.upsert(item,
+                function (result) {
                     cancelEditing();
                     getItems();
                 });
         }
 
         function deleteItem(itemId) {
-            ItemsModel.destroy(itemId)
-                .then(function (result) {
+            Item.deleteById({id: itemId},
+                function (result) {
                     cancelEditing();
                     getItems();
                 });
@@ -65,36 +64,4 @@ angular.module('SimpleRESTWebsite', [])
 
         initCreateForm();
         getItems();
-    })
-    .service('ItemsModel', function ($http, ENDPOINT_URI) {
-        var service = this,
-            path = 'items/';
-
-        function getUrl() {
-            return ENDPOINT_URI + path;
-        }
-
-        function getUrlForId(itemId) {
-            return getUrl(path) + itemId;
-        }
-
-        service.all = function () {
-            return $http.get(getUrl());
-        };
-
-        service.fetch = function (itemId) {
-            return $http.get(getUrlForId(itemId));
-        };
-
-        service.create = function (item) {
-            return $http.post(getUrl(), item);
-        };
-
-        service.update = function (itemId, item) {
-            return $http.put(getUrlForId(itemId), item);
-        };
-
-        service.destroy = function (itemId) {
-            return $http.delete(getUrlForId(itemId));
-        };
     });

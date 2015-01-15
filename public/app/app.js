@@ -14,11 +14,19 @@ angular.module('SimpleRESTWebsite', [])
             LoginService.login(user)
                 .then(function(response) {
                     user.access_token = response.data.id;
-                    main.currentUser = user;
-                    UserService.setCurrentUser(user);
+                    main.currentUser = UserService.setCurrentUser(user);
                     getItems();
                 }, function(error) {
                     alert("We couldn't find that username/password combination :(");
+                });
+        }
+
+        function logout() {
+            LoginService.logout()
+                .then(function(response) {
+                    main.currentUser = UserService.setCurrentUser(null);
+                }, function(error) {
+                    console.log(error);
                 });
         }
 
@@ -84,6 +92,7 @@ angular.module('SimpleRESTWebsite', [])
         main.editedItem = null;
         main.isEditing = false;
         main.login = login;
+        main.logout = logout;
         main.register = register;
         main.submit = submit;
         main.getItems = getItems;
@@ -95,7 +104,6 @@ angular.module('SimpleRESTWebsite', [])
         main.cancelEditing = cancelEditing;
 
         initCreateForm();
-        getItems();
     })
     .service('ItemsModel', function ($http, ENDPOINT_URI) {
         var service = this,
@@ -159,6 +167,7 @@ angular.module('SimpleRESTWebsite', [])
 
         service.setCurrentUser = function(user) {
             currentUser = user;
+            return service.getCurrentUser();
         };
 
         service.getCurrentUser = function() {

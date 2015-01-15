@@ -17,6 +17,9 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js"></script>
   </head>
   <body ng-controller="MainCtrl as main">
+    <nav ng-if="main.currentUser" class="navbar navbar-default">
+      <button class="btn btn-default navbar-btn" ng-click="main.logout()">Logout</button>
+    </nav>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-4">
@@ -39,7 +42,7 @@
               </div>
             </form>
           </div>
-          <div class="item" ng-repeat="item in main.items"
+          <div ng-if="main.currentUser" class="item" ng-repeat="item in main.items"
             ng-click="main.setEditedItem(item)"
             ng-class="{'active':main.isCurrentItem(item.id)}">
 

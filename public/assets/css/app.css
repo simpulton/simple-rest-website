@@ -1,5 +1,13 @@
-body {
-    padding: 20px;
+.container-fluid {
+    padding: 30px;
+}
+
+nav {
+    border-radius: 0 !important;
+}
+
+nav button {
+    margin-left: 10px;
 }
 
 .item {

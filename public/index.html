@@ -20,6 +20,25 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-4">
+          <div ng-if="!main.currentUser">
+            <h4>Login</h4>
+            <hr/>
+            <form class="col-xs-12" ng-submit="main.submit(main.user)">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input name="email" class="form-control" type="email" ng-model="main.user.email" placeholder="Enter email"/>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input name="password" class="form-control" type="password" ng-model="main.user.password" placeholder="Enter password"/>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-info btn-lg">Submit</button>
+                <input id="new_user" name="new_user" type="checkbox" ng-model="main.newUser"/>
+                <label for="new_user">I am a new user</label>
+              </div>
+            </form>
+          </div>
           <div class="item" ng-repeat="item in main.items"
             ng-click="main.setEditedItem(item)"
             ng-class="{'active':main.isCurrentItem(item.id)}">
@@ -29,7 +48,7 @@
             <p><strong>{{item.description}}</strong></p>
           </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8" ng-class="{faded: !main.currentUser}">
         <!-- CREATING -->
           <div ng-if="!main.isEditing">
             <h4>Create a New Item</h4>
@@ -37,13 +56,13 @@
             <form class="create-form" role="form" ng-submit="main.createItem(main.newItem)" novalidate>
               <div class="form-group">
                 <label>Item Name</label>
-                <input type="text" class="form-control" ng-model="main.newItem.name" placeholder="Enter name">
+                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.newItem.name" placeholder="Enter name">
               </div>
               <div class="form-group">
                 <label>Item Description</label>
-                <input type="text" class="form-control" ng-model="main.newItem.description" placeholder="Enter description">
+                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.newItem.description" placeholder="Enter description">
               </div>
-              <button type="submit" class="btn btn-info btn-lg">Create</button>
+              <button ng-disabled="!main.currentUser" type="submit" class="btn btn-info btn-lg">Create</button>
             </form>
           </div>
           <!-- EDITING -->
@@ -53,14 +72,14 @@
             <form class="edit-form" role="form" ng-submit="main.updateItem(main.editedItem)" novalidate>
               <div class="form-group">
                 <label>Item Name</label>
-                <input type="text" class="form-control" ng-model="main.editedItem.name" placeholder="Enter name">
+                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.editedItem.name" placeholder="Enter name">
               </div>
               <div class="form-group">
                 <label>Item Description</label>
-                <input type="text" class="form-control" ng-model="main.editedItem.description" placeholder="Enter description">
+                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.editedItem.description" placeholder="Enter description">
               </div>
-              <button type="submit" class="btn btn-info btn-lg">Save</button>
-              <button type="button" class="btn btn-default btn-lg pull-right" ng-click="main.cancelEditing()">Cancel</button>
+              <button ng-disabled="!main.currentUser" type="submit" class="btn btn-info btn-lg">Save</button>
+              <button ng-disabled="!main.currentUser" type="button" class="btn btn-default btn-lg pull-right" ng-click="main.cancelEditing()">Cancel</button>
             </form>
           </div>
         </div>

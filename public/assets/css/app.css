@@ -18,3 +18,11 @@ body {
 .active {
     background-color: #EEE;
 }
+
+.faded {
+    opacity: 0.3;
+}
+
+input[type="checkbox"] {
+    margin-left: 20px;
+}

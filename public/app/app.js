@@ -1,4 +1,4 @@
-angular.module('SimpleRESTWebsite', [])
+angular.module('SimpleRESTWebsite', ['angular-storage'])
     .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
     .config(function($httpProvider) {
         $httpProvider.interceptors.push('AccessTokenInterceptor');
@@ -104,6 +104,7 @@ angular.module('SimpleRESTWebsite', [])
         main.cancelEditing = cancelEditing;
 
         initCreateForm();
+        getItems();
     })
     .service('ItemsModel', function ($http, ENDPOINT_URI) {
         var service = this,
@@ -161,16 +162,20 @@ angular.module('SimpleRESTWebsite', [])
             return $http.post(getUrl(), user);
         };
     })
-    .service('UserService', function() {
+    .service('UserService', function(store) {
         var service = this,
             currentUser = null;
 
         service.setCurrentUser = function(user) {
             currentUser = user;
-            return service.getCurrentUser();
+            store.set('user', user);
+            return currentUser;
         };
 
         service.getCurrentUser = function() {
+            if (!currentUser) {
+                currentUser = store.get('user');
+            }
             return currentUser;
         };
     })

@@ -14,9 +14,10 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js"></script>
   </head>
-  <body ng-controller="MainCtrl as main">
+  <body ng-controller="MainCtrl as main" ng-cloak>
     <nav ng-if="main.currentUser" class="navbar navbar-default">
       <button class="btn btn-default navbar-btn" ng-click="main.logout()">Logout</button>
     </nav>

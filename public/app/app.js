@@ -179,17 +179,17 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
             return currentUser;
         };
     })
-    .factory('AccessTokenInterceptor', function(UserService) {
-       return {
-           request: function(config) {
-               var currentUser = UserService.getCurrentUser(),
-                   access_token = currentUser ? currentUser.access_token : null;
+    .service('AccessTokenInterceptor', function(UserService) {
+        var service = this;
+        
+        service.request = function(config) {
+            var currentUser = UserService.getCurrentUser(),
+                access_token = currentUser ? currentUser.access_token : null;
 
-               if (access_token) {
-                   config.headers.authorization = access_token;
-               }
-               return config;
-           }
-       }
+            if (access_token) {
+                config.headers.authorization = access_token;
+            }
+            return config;
+        }
     });
 ;

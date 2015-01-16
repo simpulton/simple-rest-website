@@ -1,18 +1,35 @@
+body {
+    background-color: whitesmoke;
+}
+
 .container-fluid {
     padding: 30px;
 }
 
-nav {
+.navbar-default {
     border-radius: 0 !important;
+    background-color: rgba(91, 192, 222, 1);
+    border: none;
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.3);
 }
 
 nav button {
     margin-left: 10px;
 }
 
+.portal {
+    padding: 0;
+    background: white;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+hr {
+    clear: both;
+}
+
 .item {
     cursor: pointer;
-    border-top: 1px #CCC solid;
+    border-bottom: 1px #CCC solid;
     border-left: 1px #CCC solid;
     border-right: 1px #CCC solid;
     margin: 0px;

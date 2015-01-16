@@ -23,9 +23,9 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-4">
-          <div ng-if="!main.currentUser">
-            <h4>Login</h4>
+        <div class="col-sm-4">
+          <div ng-if="!main.currentUser" class="portal col-xs-12">
+            <h4 class="col-xs-12">Login</h4>
             <hr/>
             <form class="col-xs-12" ng-submit="main.submit(main.user)">
               <div class="form-group">
@@ -43,16 +43,19 @@
               </div>
             </form>
           </div>
-          <div ng-if="main.currentUser" class="item" ng-repeat="item in main.items"
-            ng-click="main.setEditedItem(item)"
-            ng-class="{'active':main.isCurrentItem(item.id)}">
+          <div class="portal">
+            <div ng-if="main.currentUser" class="item" ng-repeat="item in main.items"
+                 ng-click="main.setEditedItem(item)"
+                 ng-class="{'active':main.isCurrentItem(item.id)}">
 
-            <button type="button" class="close" ng-click="main.deleteItem(item.id)">&times;</button>
-            <h3>{{item.name}}</h3>
-            <p><strong>{{item.description}}</strong></p>
+              <button type="button" class="close" ng-click="main.deleteItem(item.id)">&times;</button>
+              <h3>{{item.name}}</h3>
+
+              <p><strong>{{item.description}}</strong></p>
+            </div>
           </div>
         </div>
-        <div class="col-md-8" ng-class="{faded: !main.currentUser}">
+        <div class="col-sm-8" ng-class="{faded: !main.currentUser}">
         <!-- CREATING -->
           <div ng-if="!main.isEditing" class="col-xs-12">
             <h4>Create a New Item</h4>

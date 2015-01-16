@@ -25,6 +25,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
             LoginService.logout()
                 .then(function(response) {
                     main.currentUser = UserService.setCurrentUser(null);
+                    main.isEditing = false;
                 }, function(error) {
                     console.log(error);
                 });
@@ -181,7 +182,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
     })
     .service('AccessTokenInterceptor', function(UserService) {
         var service = this;
-        
+
         service.request = function(config) {
             var currentUser = UserService.getCurrentUser(),
                 access_token = currentUser ? currentUser.access_token : null;

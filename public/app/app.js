@@ -1,9 +1,25 @@
-angular.module('SimpleRESTWebsite', ['angular-storage'])
+angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
     .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
-    .config(function($httpProvider) {
-        $httpProvider.interceptors.push('AccessTokenInterceptor');
+    .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+        $stateProvider
+            .state('login', {
+                url: '/login',
+                templateUrl: 'app/templates/login.tmpl.html',
+                controller: 'MainCtrl',
+                controllerAs: 'main'
+            })
+            .state('dashboard', {
+                url: '/dashboard',
+                templateUrl: 'app/templates/dashboard.tmpl.html',
+                controller: 'MainCtrl',
+                controllerAs: 'main'
+            });
+
+        $urlRouterProvider.otherwise('/dashboard');
+
+        $httpProvider.interceptors.push('APIInterceptor');
     })
-    .service('AccessTokenInterceptor', function(UserService) {
+    .service('APIInterceptor', function($rootScope, UserService) {
         var service = this;
 
         service.request = function(config) {
@@ -14,7 +30,14 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
                 config.headers.authorization = access_token;
             }
             return config;
-        }
+        };
+
+        service.responseError = function(response) {
+            if (response.status === 401) {
+                $rootScope.$broadcast('unauthorized');
+            }
+            return response;
+        };
     })
     .service('UserService', function(store) {
         var service = this,
@@ -89,7 +112,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
             return $http.delete(getUrlForId(itemId));
         };
     })
-    .controller('MainCtrl', function (LoginService, UserService, ItemsModel) {
+    .controller('MainCtrl', function ($rootScope, $state, LoginService, UserService, ItemsModel) {
         var main = this;
 
         function submit(user) {
@@ -100,8 +123,8 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
             LoginService.login(user)
                 .then(function(response) {
                     user.access_token = response.data.id;
-                    main.currentUser = UserService.setCurrentUser(user);
-                    getItems();
+                    $rootScope.currentUser = UserService.setCurrentUser(user);
+                    $state.go('dashboard');
                 }, function(error) {
                     alert("We couldn't find that username/password combination :(");
                 });
@@ -110,8 +133,9 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
         function logout() {
             LoginService.logout()
                 .then(function(response) {
-                    main.currentUser = UserService.setCurrentUser(null);
+                    $rootScope.currentUser = UserService.setCurrentUser(null);
                     main.isEditing = false;
+                    $state.go('login');
                 }, function(error) {
                     console.log(error);
                 });
@@ -173,13 +197,17 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
             main.isEditing = false;
         }
 
+        $rootScope.$on('unauthorized', function() {
+            $rootScope.currentUser = UserService.setCurrentUser(null);
+            $state.go('login');
+        });
+
         main.newUser = false;
-        main.currentUser = UserService.getCurrentUser();
         main.items = [];
         main.editedItem = null;
         main.isEditing = false;
         main.login = login;
-        main.logout = logout;
+        $rootScope.logout = main.logout = logout;
         main.register = register;
         main.submit = submit;
         main.getItems = getItems;
@@ -189,6 +217,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage'])
         main.setEditedItem = setEditedItem;
         main.isCurrentItem = isCurrentItem;
         main.cancelEditing = cancelEditing;
+        $rootScope.currentUser = UserService.getCurrentUser();
 
         initCreateForm();
         getItems();

@@ -14,85 +14,21 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
     <script src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js"></script>
   </head>
-  <body ng-controller="MainCtrl as main" ng-cloak>
-    <nav ng-if="main.currentUser" class="navbar navbar-default">
-      <button class="btn btn-default navbar-btn" ng-click="main.logout()">Logout</button>
+  <body controller="RootCtrl as root" ng-cloak>
+    <nav class="navbar navbar-default">
+      <button ng-if="currentUser" class="btn btn-default navbar-btn" ng-click="logout()">Logout <strong>{{currentUser.email}}</strong></button>
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-4">
-          <div ng-if="!main.currentUser" class="portal col-xs-12">
-            <h4 class="col-xs-12">Login</h4>
-            <hr/>
-            <form class="col-xs-12" ng-submit="main.submit(main.user)">
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input name="email" class="form-control" type="email" ng-model="main.user.email" placeholder="Enter email"/>
-              </div>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input name="password" class="form-control" type="password" ng-model="main.user.password" placeholder="Enter password"/>
-              </div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-info btn-lg">Submit</button>
-                <input id="new_user" name="new_user" type="checkbox" ng-model="main.newUser"/>
-                <label for="new_user">I am a new user</label>
-              </div>
-            </form>
-          </div>
-          <div class="portal">
-            <div ng-if="main.currentUser" class="item" ng-repeat="item in main.items"
-                 ng-click="main.setEditedItem(item)"
-                 ng-class="{'active':main.isCurrentItem(item.id)}">
-
-              <button type="button" class="close" ng-click="main.deleteItem(item.id)">&times;</button>
-              <h3>{{item.name}}</h3>
-
-              <p><strong>{{item.description}}</strong></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-8" ng-class="{faded: !main.currentUser}">
-        <!-- CREATING -->
-          <div ng-if="!main.isEditing" class="col-xs-12">
-            <h4>Create a New Item</h4>
-            <hr/>
-            <form class="create-form" role="form" ng-submit="main.createItem(main.newItem)" novalidate>
-              <div class="form-group">
-                <label>Item Name</label>
-                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.newItem.name" placeholder="Enter name">
-              </div>
-              <div class="form-group">
-                <label>Item Description</label>
-                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.newItem.description" placeholder="Enter description">
-              </div>
-              <button ng-disabled="!main.currentUser" type="submit" class="btn btn-info btn-lg">Create</button>
-            </form>
-          </div>
-          <!-- EDITING -->
-          <div ng-if="main.isEditing" class="col-xs-12">
-            <h4>Editing {{main.editedItem.name}}</h4>
-            <hr/>
-            <form class="edit-form" role="form" ng-submit="main.updateItem(main.editedItem)" novalidate>
-              <div class="form-group">
-                <label>Item Name</label>
-                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.editedItem.name" placeholder="Enter name">
-              </div>
-              <div class="form-group">
-                <label>Item Description</label>
-                <input ng-disabled="!main.currentUser" type="text" class="form-control" ng-model="main.editedItem.description" placeholder="Enter description">
-              </div>
-              <button ng-disabled="!main.currentUser" type="submit" class="btn btn-info btn-lg">Save</button>
-              <button ng-disabled="!main.currentUser" type="button" class="btn btn-default btn-lg pull-right" ng-click="main.cancelEditing()">Cancel</button>
-            </form>
-          </div>
-        </div>
+        <div ui-view></div>
       </div>
     </div>
 
     <script src="app/app.js"></script>
   </body>
 </html>
+

@@ -14,8 +14,8 @@ You will need:
   ```bash
   git clone git@github.com:simpulton/simple-rest-website.git
   cd simple-rest-website
-  npm install
-  node site.js
+  npm install -g serve
+  serve public
   ```
 
 3. Navigate to [localhost:1338](http://localhost:1338)

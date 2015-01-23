@@ -20,7 +20,8 @@
     </head>
     <body ng-controller="MainCtrl as main" ng-cloak>
         <nav class="navbar navbar-default">
-            <button ng-if="main.currentUser" class="btn btn-default navbar-btn" ng-click="main.logout()">Logout <strong>{{main.currentUser.email}}</strong></button>
+            <button ng-if="main.currentUser" class="btn btn-default navbar-btn"
+                    ng-click="main.logout()">Logout <strong>{{main.currentUser.email}}</strong></button>
         </nav>
         <div class="container-fluid">
             <div class="row">

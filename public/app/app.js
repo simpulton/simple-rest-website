@@ -5,14 +5,14 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
             .state('login', {
                 url: '/login',
                 templateUrl: 'app/templates/login.tmpl.html',
-                controller: 'MainCtrl',
-                controllerAs: 'main'
+                controller: 'LoginCtrl',
+                controllerAs: 'login'
             })
             .state('dashboard', {
                 url: '/dashboard',
                 templateUrl: 'app/templates/dashboard.tmpl.html',
-                controller: 'MainCtrl',
-                controllerAs: 'main'
+                controller: 'DashboardCtrl',
+                controllerAs: 'dashboard'
             });
 
         $urlRouterProvider.otherwise('/dashboard');
@@ -112,32 +112,16 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
             return $http.delete(getUrlForId(itemId));
         };
     })
-    .controller('MainCtrl', function ($rootScope, $state, LoginService, UserService, ItemsModel) {
-        var main = this;
+    .controller('LoginCtrl', function($rootScope, $state, LoginService, UserService){
+        var login = this;
 
-        function submit(user) {
-            main.newUser ? main.register(user) : main.login(user);
-        }
-
-        function login(user) {
+        function signIn(user) {
             LoginService.login(user)
                 .then(function(response) {
                     user.access_token = response.data.id;
-                    $rootScope.currentUser = UserService.setCurrentUser(user);
+                    UserService.setCurrentUser(user);
+                    $rootScope.$broadcast('authorized');
                     $state.go('dashboard');
-                }, function(error) {
-                    alert("We couldn't find that username/password combination :(");
-                });
-        }
-
-        function logout() {
-            LoginService.logout()
-                .then(function(response) {
-                    $rootScope.currentUser = UserService.setCurrentUser(null);
-                    main.isEditing = false;
-                    $state.go('login');
-                }, function(error) {
-                    console.log(error);
                 });
         }
 
@@ -148,10 +132,45 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
                 });
         }
 
+        function submit(user) {
+            login.newUser ? register(user) : signIn(user);
+        }
+
+        login.newUser = false;
+        login.submit = submit;
+    })
+    .controller('MainCtrl', function ($rootScope, $state, LoginService, UserService) {
+        var main = this;
+
+        function logout() {
+            LoginService.logout()
+                .then(function(response) {
+                    main.currentUser = UserService.setCurrentUser(null);
+                    $state.go('login');
+                }, function(error) {
+                    console.log(error);
+                });
+        }
+
+        $rootScope.$on('authorized', function() {
+            main.currentUser = UserService.getCurrentUser();
+        });
+
+        $rootScope.$on('unauthorized', function() {
+            main.currentUser = UserService.setCurrentUser(null);
+            $state.go('login');
+        });
+
+        main.logout = logout;
+        main.currentUser = UserService.getCurrentUser();
+    })
+    .controller('DashboardCtrl', function(ItemsModel){
+        var dashboard = this;
+
         function getItems() {
             ItemsModel.all()
                 .then(function (result) {
-                    main.items = result.data;
+                    dashboard.items = result.data;
                 });
         }
 
@@ -180,44 +199,33 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
         }
 
         function initCreateForm() {
-            main.newItem = { name: '', description: '' };
+            dashboard.newItem = { name: '', description: '' };
         }
 
         function setEditedItem(item) {
-            main.editedItem = angular.copy(item);
-            main.isEditing = true;
+            dashboard.editedItem = angular.copy(item);
+            dashboard.isEditing = true;
         }
 
         function isCurrentItem(itemId) {
-            return main.editedItem !== null && main.editedItem.id === itemId;
+            return dashboard.editedItem !== null && dashboard.editedItem.id === itemId;
         }
 
         function cancelEditing() {
-            main.editedItem = null;
-            main.isEditing = false;
+            dashboard.editedItem = null;
+            dashboard.isEditing = false;
         }
 
-        $rootScope.$on('unauthorized', function() {
-            $rootScope.currentUser = UserService.setCurrentUser(null);
-            $state.go('login');
-        });
-
-        main.newUser = false;
-        main.items = [];
-        main.editedItem = null;
-        main.isEditing = false;
-        main.login = login;
-        $rootScope.logout = main.logout = logout;
-        main.register = register;
-        main.submit = submit;
-        main.getItems = getItems;
-        main.createItem = createItem;
-        main.updateItem = updateItem;
-        main.deleteItem = deleteItem;
-        main.setEditedItem = setEditedItem;
-        main.isCurrentItem = isCurrentItem;
-        main.cancelEditing = cancelEditing;
-        $rootScope.currentUser = UserService.getCurrentUser();
+        dashboard.items = [];
+        dashboard.editedItem = null;
+        dashboard.isEditing = false;
+        dashboard.getItems = getItems;
+        dashboard.createItem = createItem;
+        dashboard.updateItem = updateItem;
+        dashboard.deleteItem = deleteItem;
+        dashboard.setEditedItem = setEditedItem;
+        dashboard.isCurrentItem = isCurrentItem;
+        dashboard.cancelEditing = cancelEditing;
 
         initCreateForm();
         getItems();

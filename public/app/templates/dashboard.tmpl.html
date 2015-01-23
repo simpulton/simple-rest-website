@@ -1,54 +1,60 @@
 <div class="col-sm-4">
-  <div class="portal col">
-    <div ng-if="currentUser" class="item" ng-repeat="item in main.items"
-         ng-click="main.setEditedItem(item)"
-         ng-class="{'active':main.isCurrentItem(item.id)}">
+    <div class="portal col">
+        <div class="item" ng-repeat="item in dashboard.items"
+             ng-click="dashboard.setEditedItem(item)"
+             ng-class="{'active':dashboard.isCurrentItem(item.id)}">
 
-      <button type="button" class="close" ng-click="main.deleteItem(item.id)">&times;</button>
-      <h3>{{item.name}}</h3>
+            <button type="button" class="close" ng-click="dashboard.deleteItem(item.id)">&times;</button>
+            <h3>{{item.name}}</h3>
 
-      <p><strong>{{item.description}}</strong></p>
+            <p><strong>{{item.description}}</strong></p>
+        </div>
     </div>
-  </div>
 </div>
-<!-- CREATING -->
 <div class="col-sm-8">
-  <div ng-if="!main.isEditing" class="col-xs-12">
-    <h4>Create a New Item</h4>
-    <hr/>
-    <form class="create-form" role="form" ng-submit="main.createItem(main.newItem)" novalidate>
-      <div class="form-group">
-        <label>Item Name</label>
-        <input type="text" class="form-control" ng-model="main.newItem.name"
-               placeholder="Enter name">
-      </div>
-      <div class="form-group">
-        <label>Item Description</label>
-        <input type="text" class="form-control" ng-model="main.newItem.description"
-               placeholder="Enter description">
-      </div>
-      <button type="submit" class="btn btn-info btn-lg">Create</button>
-    </form>
-  </div>
-  <!-- EDITING -->
-  <div ng-if="main.isEditing" class="col-xs-12">
-    <h4>Editing {{main.editedItem.name}}</h4>
-    <hr/>
-    <form class="edit-form" role="form" ng-submit="main.updateItem(main.editedItem)" novalidate>
-      <div class="form-group">
-        <label>Item Name</label>
-        <input type="text" class="form-control" ng-model="main.editedItem.name"
-               placeholder="Enter name">
-      </div>
-      <div class="form-group">
-        <label>Item Description</label>
-        <input type="text" class="form-control" ng-model="main.editedItem.description"
-               placeholder="Enter description">
-      </div>
-      <button type="submit" class="btn btn-info btn-lg">Save</button>
-      <button type="button" class="btn btn-default btn-lg pull-right"
-              ng-click="main.cancelEditing()">Cancel
-      </button>
-    </form>
-  </div>
+    <!-- CREATING -->
+    <div ng-if="!dashboard.isEditing" class="col-xs-12">
+        <h4>Create a New Item</h4>
+        <hr/>
+        <form class="create-form" role="form"
+              ng-submit="dashboard.createItem(dashboard.newItem)" novalidate>
+            <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" class="form-control"
+                       ng-model="dashboard.newItem.name"
+                       placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label>Item Description</label>
+                <input type="text" class="form-control"
+                       ng-model="dashboard.newItem.description"
+                       placeholder="Enter description">
+            </div>
+            <button type="submit" class="btn btn-info btn-lg">Create</button>
+        </form>
+    </div>
+    <!-- EDITING -->
+    <div ng-if="dashboard.isEditing" class="col-xs-12">
+        <h4>Editing {{dashboard.editedItem.name}}</h4>
+        <hr/>
+        <form class="edit-form" role="form"
+              ng-submit="dashboard.updateItem(dashboard.editedItem)" novalidate>
+            <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" class="form-control"
+                       ng-model="dashboard.editedItem.name"
+                       placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label>Item Description</label>
+                <input type="text" class="form-control"
+                       ng-model="dashboard.editedItem.description"
+                       placeholder="Enter description">
+            </div>
+            <button type="submit" class="btn btn-info btn-lg">Save</button>
+            <button type="button" class="btn btn-default btn-lg pull-right"
+                    ng-click="dashboard.cancelEditing()">Cancel
+            </button>
+        </form>
+    </div>
 </div>

@@ -1,5 +1,4 @@
-angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
-    .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
+angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router', 'backand', 'ngCookies'])
     .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         $stateProvider
             .state('login', {
@@ -19,16 +18,11 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
 
         $httpProvider.interceptors.push('APIInterceptor');
     })
-    .service('APIInterceptor', function($rootScope, UserService) {
+    .service('APIInterceptor', function($rootScope, $cookieStore) {
         var service = this;
 
         service.request = function(config) {
-            var currentUser = UserService.getCurrentUser(),
-                access_token = currentUser ? currentUser.access_token : null;
-
-            if (access_token) {
-                config.headers.authorization = access_token;
-            }
+            config.headers['Authorization'] = $cookieStore.get('backand_token');
             return config;
         };
 
@@ -56,7 +50,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
             return currentUser;
         };
     })
-    .service('LoginService', function($http, ENDPOINT_URI) {
+    .service('LoginService', function($http) {
         var service = this,
             path = 'Users/';
 
@@ -80,12 +74,13 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
             return $http.post(getUrl(), user);
         };
     })
-    .service('ItemsModel', function ($http, ENDPOINT_URI) {
+    .service('ItemsModel', function ($http, Backand) {
         var service = this,
+            tableUrl = '/1/table/data/',
             path = 'items/';
 
         function getUrl() {
-            return ENDPOINT_URI + path;
+            return Backand.configuration.apiUrl + tableUrl + path;
         }
 
         function getUrlForId(itemId) {
@@ -112,57 +107,36 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
             return $http.delete(getUrlForId(itemId));
         };
     })
-    .controller('LoginCtrl', function($rootScope, $state, LoginService, UserService){
+    .controller('LoginCtrl', function($rootScope, $state, Backand, $cookieStore, UserService){
         var login = this;
 
-        function signIn(user) {
-            LoginService.login(user)
-                .then(function(response) {
-                    user.access_token = response.data.id;
-                    UserService.setCurrentUser(user);
+        function signin() {
+            Backand.signin(login.email, login.password, login.appName)
+                .then(function(token) {
+                    $cookieStore.put(Backand.configuration.tokenName, token);
                     $rootScope.$broadcast('authorized');
                     $state.go('dashboard');
-                });
-        }
-
-        function register(user) {
-            LoginService.register(user)
-                .then(function(response) {
-                    login(user);
-                });
-        }
-
-        function submit(user) {
-            login.newUser ? register(user) : signIn(user);
-        }
-
-        login.newUser = false;
-        login.submit = submit;
-    })
-    .controller('MainCtrl', function ($rootScope, $state, LoginService, UserService) {
-        var main = this;
-
-        function logout() {
-            LoginService.logout()
-                .then(function(response) {
-                    main.currentUser = UserService.setCurrentUser(null);
-                    $state.go('login');
                 }, function(error) {
                     console.log(error);
                 });
         }
 
-        $rootScope.$on('authorized', function() {
-            main.currentUser = UserService.getCurrentUser();
-        });
+        login.newUser = false;
+        login.signin = signin;
+    })
+    .controller('MainCtrl', function ($rootScope, $state, LoginService, Backand) {
+        var main = this;
+
+        function logout() {
+            Backand.signout();
+            $state.go('login');
+        }
 
         $rootScope.$on('unauthorized', function() {
-            main.currentUser = UserService.setCurrentUser(null);
             $state.go('login');
         });
 
         main.logout = logout;
-        main.currentUser = UserService.getCurrentUser();
     })
     .controller('DashboardCtrl', function(ItemsModel){
         var dashboard = this;
@@ -170,7 +144,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
         function getItems() {
             ItemsModel.all()
                 .then(function (result) {
-                    dashboard.items = result.data;
+                    dashboard.items = result.data.data;
                 });
         }
 
@@ -183,7 +157,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
         }
 
         function updateItem(item) {
-            ItemsModel.update(item.id, item)
+            ItemsModel.update(item.Id, item)
                 .then(function (result) {
                     cancelEditing();
                     getItems();
@@ -208,7 +182,7 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
         }
 
         function isCurrentItem(itemId) {
-            return dashboard.editedItem !== null && dashboard.editedItem.id === itemId;
+            return dashboard.editedItem !== null && dashboard.editedItem.Id === itemId;
         }
 
         function cancelEditing() {

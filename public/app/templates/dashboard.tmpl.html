@@ -2,9 +2,9 @@
     <div class="portal col">
         <div class="item" ng-repeat="item in dashboard.items"
              ng-click="dashboard.setEditedItem(item)"
-             ng-class="{'active':dashboard.isCurrentItem(item.id)}">
+             ng-class="{'active':dashboard.isCurrentItem(item.Id)}">
 
-            <button type="button" class="close" ng-click="dashboard.deleteItem(item.id)">&times;</button>
+            <button type="button" class="close" ng-click="dashboard.deleteItem(item.Id)">&times;</button>
             <h3>{{item.name}}</h3>
 
             <p><strong>{{item.description}}</strong></p>

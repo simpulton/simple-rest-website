@@ -2,21 +2,24 @@
     <div class="portal col-xs-12">
         <h4 class="col-xs-12">Login</h4>
         <hr/>
-        <form class="col-xs-12" ng-submit="login.submit(login.user)">
+        <form class="col-xs-12" ng-submit="login.signin()">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input id="email" name="email" class="form-control" type="email"
-                       ng-model="login.user.email" placeholder="Enter email"/>
+                       ng-model="login.email" placeholder="Enter email"/>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input id="password" name="password" class="form-control" type="password"
-                       ng-model="login.user.password" placeholder="Enter password"/>
+                       ng-model="login.password" placeholder="Enter password"/>
+            </div>
+            <div class="form-group">
+                <label for="appName">App Name</label>
+                <input id="appName" name="appName" class="form-control" type="text"
+                       ng-model="login.appName" placeholder="App Name"/>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-info btn-lg">Submit</button>
-                <input id="new_user" name="new_user" type="checkbox" ng-model="login.newUser"/>
-                <label for="new_user">I am a new user</label>
             </div>
         </form>
     </div>

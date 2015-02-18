@@ -1,4 +1,4 @@
-angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
+angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router', 'weblogng'])
     .constant('ENDPOINT_URI', 'http://192.168.59.103:1337/api/')
     .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         $stateProvider
@@ -230,4 +230,12 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
         initCreateForm();
         getItems();
     })
+  .constant('weblogngConfig', {
+    apiKey: '48548598-f079-4c57-bb39-d9ca8344abd7',
+    options: {
+      publishNavigationTimingMetrics: true,
+      publishUserActive: true,
+      application: 'simple-rest-website'
+    }
+  })
 ;

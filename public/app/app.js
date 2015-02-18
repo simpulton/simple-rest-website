@@ -1,5 +1,5 @@
 angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
-    .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
+    .constant('ENDPOINT_URI', 'http://192.168.59.103:1337/api/')
     .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         $stateProvider
             .state('login', {

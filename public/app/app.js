@@ -1,5 +1,5 @@
 angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router', 'weblogng'])
-    .constant('ENDPOINT_URI', 'http://192.168.59.103:1337/api/')
+    .constant('ENDPOINT_URI', 'https://simple-rest-api.herokuapp.com/api/')
     .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         $stateProvider
             .state('login', {

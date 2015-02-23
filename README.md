@@ -26,7 +26,7 @@ You will need:
 If you would like to run your own api, then 
 1. head over to [Simple REST API](https://github.com/simpulton/simple-rest-api) and follow the directions there to run the API.
 
-2. Update public/app/app.js to use the local api server at http://localhost:1337/api/
+2. Update public/app/app.js to use the local api server at [http://localhost:1337/api/](http://localhost:1337/api/)
 
 * Note: If you want to use the version without authentication, checkout the "without-auth" branch. Be sure to do the same in the simple-rest-api repo. Restart the API if necessary.
 

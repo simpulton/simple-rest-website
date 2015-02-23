@@ -1,5 +1,5 @@
-angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
-    .constant('ENDPOINT_URI', 'http://localhost:1337/api/')
+angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router', 'weblogng'])
+    .constant('ENDPOINT_URI', 'https://simple-rest-api.herokuapp.com/api/')
     .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         $stateProvider
             .state('login', {
@@ -230,4 +230,12 @@ angular.module('SimpleRESTWebsite', ['angular-storage', 'ui.router'])
         initCreateForm();
         getItems();
     })
+  .constant('weblogngConfig', {
+    apiKey: '48548598-f079-4c57-bb39-d9ca8344abd7',
+    options: {
+      publishNavigationTimingMetrics: true,
+      publishUserActive: true,
+      application: 'simple-rest-website'
+    }
+  })
 ;

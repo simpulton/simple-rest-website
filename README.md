@@ -8,8 +8,7 @@ You will need:
 * [Simple REST API](https://github.com/simpulton/simple-rest-api)
 
 ## Getting Started
-1. Head over to [Simple REST API](https://github.com/simpulton/simple-rest-api) and follow the directions there to run the API.
-2. Once the API is running, run the following commands
+1. Run the following commands
 
   ```bash
   git clone git@github.com:simpulton/simple-rest-website.git
@@ -17,7 +16,18 @@ You will need:
   npm install -g serve
   serve public
   ```
-  * Note: If you want to use the version without authentication, checkout the "without-auth" branch. Be sure to do the same in the simple-rest-api repo. Restart the API if necessary.
 
-3. Navigate to [localhost:1338](http://localhost:1338)
-4. Hooray! Now you can interact with the API! How simple was that??
+2. Navigate to [localhost:3000](http://localhost:3000).
+
+3. Hooray! Now you can interact with the API running on heroku! How simple was that??
+
+### Running your own API server
+
+If you would like to run your own api, then 
+1. head over to [Simple REST API](https://github.com/simpulton/simple-rest-api) and follow the directions there to run the API.
+
+2. Update public/app/app.js to use the local api server at http://192.168.59.103:1337/api/
+
+* Note: If you want to use the version without authentication, checkout the "without-auth" branch. Be sure to do the same in the simple-rest-api repo. Restart the API if necessary.
+
+
